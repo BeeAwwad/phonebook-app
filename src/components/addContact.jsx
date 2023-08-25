@@ -9,23 +9,32 @@ function AddContact({ persons, setPersons }) {
 
   const addPerson = (event) => {
     event.preventDefault();
-    // Check if the name or number is empty
-    if (newName.trim() === "" || newNumber.trim() === "") {
-      console.log("Name and number fields cannot be empty");
-      return;
-    }
-    // Check if the newName already exists in the persons array
-    const nameExists = persons.some(
-      (person) =>
-        person.name === newName.trim() && person.number === newNumber.trim()
-    );
-    console.log("🚀 ~ file: App.jsx:11 ~ addPerson ~ nameExists:", nameExists);
-
-    if (nameExists) {
-      console.log(`${newName} is already added to phonebook`);
-    } else {
-        // Make a POST request to the backend API
+  
+    const existingPerson = persons.find((person) => person.name === newName.trim());
+  
+    if (existingPerson) {
+      if (window.confirm(`${newName} is already added to the phonebook. Do you want to update the number?`)) {
+        // Make a PUT request to update the number
         axios
+          .put(`http://localhost:3001/api/persons/${existingPerson.id}`, {
+            ...existingPerson,
+            number: newNumber.trim(),
+          })
+          .then((response) => {
+            // Update the persons state with the updated data
+            setPersons((prevPersons) =>
+              prevPersons.map((person) =>
+                person.id === existingPerson.id ? response.data : person
+              )
+            );
+          })
+          .catch((error) => {
+            console.error("Error updating person:", error);
+          });
+      }
+    } else {
+      // Make a POST request to add a new person
+      axios
           .post(`http://localhost:3001/api/persons/${newName}/${newNumber}`)
           .then((response) => {
             // Update the persons state with the new data
@@ -34,7 +43,7 @@ function AddContact({ persons, setPersons }) {
           .catch((error) => {
             console.error("Error adding person:", error);
           });
-      }
+    }
     setNewName("");
     setNewNumber("");
   };
