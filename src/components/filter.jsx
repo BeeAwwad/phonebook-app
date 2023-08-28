@@ -1,6 +1,6 @@
 import axios from "axios";
 
-function Filter({ persons, searchTerm, setPersons }) {
+function Filter({ persons, searchTerm, setPersons, setErrorMessage }) {
   // Filter the persons array based on the search term
   const filteredPersons = persons.filter((person) => {
     return person.name.toLowerCase().startsWith(searchTerm.toLowerCase());
@@ -26,6 +26,10 @@ function Filter({ persons, searchTerm, setPersons }) {
 
         .catch((error) => {
           console.error("Error deleting person:", error);
+          setErrorMessage(`${personName} has already been deleted`)
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
         });
     }
   };

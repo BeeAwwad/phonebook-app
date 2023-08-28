@@ -1,13 +1,17 @@
 import { useState, useEffect } from "react";
 import AddContact from "./components/addContact";
 import SearchContact from "./components/searchContact";
+import Notification from "./components/notification";
 import Filter from "./components/filter";
 import axios from "axios";
+import "./index.css";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
+  const [newName, setNewName] = useState("");
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     // Make a GET request to your backend API endpoint
@@ -15,7 +19,7 @@ const App = () => {
       .get("http://localhost:3001/api/persons")
       .then((response) => {
         setPersons(response.data);
-            setLoading(false);
+        setLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -23,8 +27,8 @@ const App = () => {
       });
   }, []);
 
-   // Log the updated persons state whenever it changes
-   useEffect(() => {
+  // Log the updated persons state whenever it changes
+  useEffect(() => {
     console.log("Updated persons:", persons);
   }, [persons]);
 
@@ -37,12 +41,20 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <SearchContact searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-      <AddContact persons={persons} setPersons={setPersons} />
+      <Notification message={errorMessage} />
+      <AddContact
+        newName={newName}
+        setNewName={setNewName}
+        persons={persons}
+        setPersons={setPersons}
+      />
       <h2>Numbers</h2>
       <Filter
+        setErrorMessage={setErrorMessage}
         persons={persons}
         searchTerm={searchTerm}
         setPersons={setPersons}
+        newName={newName}
       />
     </div>
   );

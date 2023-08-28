@@ -9,11 +9,21 @@ function AddContact({ persons, setPersons }) {
 
   const addPerson = (event) => {
     event.preventDefault();
-  
-    const existingPerson = persons.find((person) => person.name === newName.trim());
-  
+
+    const existingPerson = persons.find(
+      (person) => person.name === newName.trim()
+    );
+    console.log(
+      "🚀 ~ file: addContact.jsx:14 ~ addPerson ~ existingPerson:",
+      existingPerson
+    );
+
     if (existingPerson) {
-      if (window.confirm(`${newName} is already added to the phonebook. Do you want to update the number?`)) {
+      if (
+        window.confirm(
+          `${newName} is already added to the phonebook. Do you want to update the number?`
+        )
+      ) {
         // Make a PUT request to update the number
         axios
           .put(`http://localhost:3001/api/persons/${existingPerson.id}`, {
@@ -35,14 +45,14 @@ function AddContact({ persons, setPersons }) {
     } else {
       // Make a POST request to add a new person
       axios
-          .post(`http://localhost:3001/api/persons/${newName}/${newNumber}`)
-          .then((response) => {
-            // Update the persons state with the new data
-            setPersons([...persons, response.data]);
-          })
-          .catch((error) => {
-            console.error("Error adding person:", error);
-          });
+        .post(`http://localhost:3001/api/persons/${newName}/${newNumber}`)
+        .then((response) => {
+          // Update the persons state with the new data
+          setPersons([...persons, response.data]);
+        })
+        .catch((error) => {
+          console.error("Error adding person:", error);
+        });
     }
     setNewName("");
     setNewNumber("");
