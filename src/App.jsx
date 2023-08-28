@@ -10,8 +10,8 @@ const App = () => {
   const [persons, setPersons] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
-  const [newName, setNewName] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
+  const [messageClass, setMessageClass] = useState(null);
 
   useEffect(() => {
     // Make a GET request to your backend API endpoint
@@ -41,12 +41,12 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <SearchContact searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-      <Notification message={errorMessage} />
+      <Notification message={errorMessage} messageClass={messageClass} />
       <AddContact
-        newName={newName}
-        setNewName={setNewName}
         persons={persons}
         setPersons={setPersons}
+        message={setErrorMessage}
+        setMessageClass={setMessageClass}
       />
       <h2>Numbers</h2>
       <Filter
@@ -54,7 +54,7 @@ const App = () => {
         persons={persons}
         searchTerm={searchTerm}
         setPersons={setPersons}
-        newName={newName}
+        setMessageClass={setMessageClass}
       />
     </div>
   );

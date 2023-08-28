@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 
-function AddContact({ persons, setPersons }) {
+function AddContact({ persons, setPersons, message, setMessageClass }) {
   const [nameError, setNameError] = useState("");
   const [numberError, setNumberError] = useState("");
   const [newName, setNewName] = useState("");
@@ -49,6 +49,13 @@ function AddContact({ persons, setPersons }) {
         .then((response) => {
           // Update the persons state with the new data
           setPersons([...persons, response.data]);
+          message(`${newName} has been added successfully`);
+          setMessageClass("completed");
+
+          setTimeout(() => {
+            message(null);
+            setMessageClass(null);
+          }, 5000)
         })
         .catch((error) => {
           console.error("Error adding person:", error);
