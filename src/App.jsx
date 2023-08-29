@@ -16,7 +16,7 @@ const App = () => {
   useEffect(() => {
     // Make a GET request to your backend API endpoint
     axios
-      .get("http://localhost:3001/api/persons")
+      .get("/api/persons")
       .then((response) => {
         setPersons(response.data);
         setLoading(false);

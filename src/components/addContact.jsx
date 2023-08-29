@@ -26,7 +26,7 @@ function AddContact({ persons, setPersons, message, setMessageClass }) {
       ) {
         // Make a PUT request to update the number
         axios
-          .put(`http://localhost:3001/api/persons/${existingPerson.id}`, {
+          .put(`/api/persons/${existingPerson.id}`, {
             ...existingPerson,
             number: newNumber.trim(),
           })
@@ -45,7 +45,7 @@ function AddContact({ persons, setPersons, message, setMessageClass }) {
     } else {
       // Make a POST request to add a new person
       axios
-        .post(`http://localhost:3001/api/persons/${newName}/${newNumber}`)
+        .post(`/api/persons/${newName}/${newNumber}`)
         .then((response) => {
           // Update the persons state with the new data
           setPersons([...persons, response.data]);

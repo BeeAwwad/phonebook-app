@@ -14,7 +14,7 @@ function Filter({ persons, searchTerm, setPersons, setErrorMessage, setMessageCl
       console.log("Confirmed to delete:", personName);
       // Make a DELETE request to the backend API
       axios
-        .delete(`http://localhost:3001/api/persons/${id}`)
+        .delete(`/api/persons/${id}`)
 
         .then(() => {
           setPersons((prevPersons) =>
