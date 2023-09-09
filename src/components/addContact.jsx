@@ -45,7 +45,7 @@ function AddContact({ persons, setPersons, message, setMessageClass }) {
     } else {
       // Make a POST request to add a new person
       axios
-        .post(`/api/persons/${newName}/${newNumber}`)
+        .post("/api/persons", { name: newName, number: newNumber})
         .then((response) => {
           // Update the persons state with the new data
           setPersons([...persons, response.data]);
@@ -55,7 +55,7 @@ function AddContact({ persons, setPersons, message, setMessageClass }) {
           setTimeout(() => {
             message(null);
             setMessageClass(null);
-          }, 5000)
+          }, 5000);
         })
         .catch((error) => {
           console.error("Error adding person:", error);
